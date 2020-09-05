@@ -1,7 +1,7 @@
 name: animation_page
 description: Animation page.
-version: 0.0.1
-author: wuweijian1997 <wuweijian1997@gmail.com>
+version: 0.0.2
+author: wuweijian1997
 homepage: https://github.com/wuweijian1997/flutter_animation_page
 
 environment:

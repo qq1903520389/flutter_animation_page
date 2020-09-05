@@ -28,21 +28,12 @@ class DemoPage extends StatefulWidget {
 
 class _DemoPageState extends State<DemoPage>
     with TickerProviderStateMixin, AnimationPageMixin {
-  AnimationController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        AnimationController(duration: animationPageDuration, vsync: this);
-    controller.forward();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: initAnimation(widgetList, controller),
+        children: initAnimationList(widgetList, controller),
       ),
     );
   }

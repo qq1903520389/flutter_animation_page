@@ -1,25 +1,33 @@
 library animation_page;
 
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
-mixin AnimationPageMixin {
-
+mixin AnimationPageMixin<T extends StatefulWidget> on TickerProviderStateMixin<T> {
+  AnimationController animationController;
   Duration animationPageDuration = const Duration(milliseconds: 1000);
 
-  List<Widget> initAnimation(List<Widget> widgetList, AnimationController controller) {
+  @override
+  void initState() {
+    super.initState();
+    animationController ??= AnimationController(duration: animationPageDuration, vsync: this);
+    animationController.forward();
+  }
+
+  ///瀛愮被閲嶅啓widgetList get鏂规硶
+  @protected
+  List<Widget> get widgetList;
+
+  List<Widget> initAnimationList() {
     List<Widget> list = [];
     int count = widgetList.length;
     for (int i = 0; i < count; i++) {
       final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
-          parent: controller,
+          parent: animationController,
           curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
         ),
       );
-      list.add(buildAnimationWidget(animation, controller, widgetList[i]));
+      list.add(buildAnimationWidget(animation, animationController, widgetList[i]));
     }
     return list;
   }
@@ -29,7 +37,7 @@ mixin AnimationPageMixin {
       animation: controller,
       builder: (BuildContext context, Widget child) {
         return Opacity(
-          opacity: pow(animation.value, 2),
+          opacity: animation.value,
           child: Transform(
             transform: buildTransform(animation),
             child: child,
@@ -41,6 +49,6 @@ mixin AnimationPageMixin {
   }
 
   buildTransform(Animation animation) {
-    return Matrix4.translationValues( 10 * (1.0 - pow(animation.value, 2)), 10 * (1.0 - pow(animation.value, 2)), 0.0);
+    return Matrix4.translationValues(0, 10 * (1.0 - animation.value), 0.0);
   }
 }
